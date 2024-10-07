@@ -37,32 +37,34 @@ class PlayerTest {
     }
 
     @Test
-    public void testPlayerAddPointWhenWeHaveBothCooperates() {
-        Player firstPlayer = new Player(PlayerType.ALWAYS_COOPERATE);
-        firstPlayer.addPoints(Move.COOPERATE);
-        assertEquals(firstPlayer.getScore(),2);
-    }
-
-    @Test
-    public void testPlayerAddPointWhenWeHaveBothCheat() {
+    public void testPlayerLoosePoints() {
         Player firstPlayer = new Player(PlayerType.ALWAYS_CHEAT);
-        firstPlayer.addPoints(Move.CHEAT);
-        assertEquals(firstPlayer.getScore(),0);
+        firstPlayer.loose();
+
+        assertEquals(-1,firstPlayer.getScore());
     }
 
-
     @Test
-    public void testPlayerAddPointWhenWeHaveBothDifferent() {
+    public void testPlayerLoosePointsNegativeCase() {
         Player firstPlayer = new Player(PlayerType.ALWAYS_CHEAT);
-        firstPlayer.addPoints(Move.COOPERATE);
-        assertEquals(firstPlayer.getScore(),3);
+        firstPlayer.loose();
+
+        assertNotEquals(0,firstPlayer.getScore());
     }
 
     @Test
-    public void testPlayerAddPointWhenWeHaveBothDifferentFirstPlayerCooperate() {
-        Player firstPlayer = new Player(PlayerType.ALWAYS_COOPERATE);
-        firstPlayer.addPoints(Move.CHEAT);
-        assertEquals(firstPlayer.getScore(),-1);
+    public void testPlayerGainPoints() {
+        Player firstPlayer = new Player(PlayerType.ALWAYS_CHEAT);
+        firstPlayer.gainThree();
+
+        assertEquals(3,firstPlayer.getScore());
     }
 
+    @Test
+    public void testPlayerGainPointsNegativeCase() {
+        Player firstPlayer = new Player(PlayerType.ALWAYS_CHEAT);
+        firstPlayer.gainThree();
+
+        assertNotEquals(2,firstPlayer.getScore());
+    }
 }

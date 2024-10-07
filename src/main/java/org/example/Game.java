@@ -1,6 +1,7 @@
 package org.example;
 
 import org.example.Enums.Move;
+import org.example.Exceptions.InvalidRoundException;
 
 public class Game {
     private Player player1;
@@ -18,14 +19,18 @@ public class Game {
 
     public void playGame() {
         for (int i = 0; i < rounds; i++) {
-            calculateScore();
+            updateScore();
         }
     }
 
-    private void calculateScore() {
-        Move move1 = player1.doMove();
-        Move move2 = player2.doMove();
-        player1.addPoints(move2);
-        player2.addPoints(move1);
+    private void updateScore() {
+        if (player1.doMove() == Move.COOPERATE){
+            player1.loose();
+            player2.gainThree();
+        }
+        if(player2.doMove() == Move.COOPERATE){
+            player1.gainThree();
+            player2.loose();
+        }
     }
 }

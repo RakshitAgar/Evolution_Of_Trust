@@ -20,19 +20,15 @@ public class Player {
         }
     }
 
-    public void addPoints(Move opponentMove) {
-        if (doMove() == Move.COOPERATE && opponentMove.equals(Move.COOPERATE)) {
-            score += 2;
-        } else if (doMove() == Move.CHEAT && opponentMove.equals(Move.CHEAT)) {
-            // do nothing since we have to add 0 only
-        } else if (doMove() == Move.COOPERATE && opponentMove.equals(Move.CHEAT)){
-            score += -1;
-        } else {
-            score += 3;
-        }
-    }
-
     public int getScore() {
         return this.score;
+    }
+
+    public void loose() {
+        this.score -= 1;
+    }
+
+    public void gainThree() {
+        this.score += 3;
     }
 }
