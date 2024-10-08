@@ -1,7 +1,11 @@
 package org.example;
 
-import org.example.Enums.PlayerType;
 import org.example.Exceptions.InvalidRoundException;
+import org.example.Players.AlwaysCheatPlayer;
+import org.example.Players.AlwaysCooperatePlayer;
+import org.example.Players.CopyCatPlayer;
+
+
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -10,8 +14,8 @@ class GameTest {
 
     @Test
     public void testGameWithLessThan0Rounds() {
-        Player player1 = new Player(PlayerType.ALWAYS_CHEAT);
-        Player player2 = new Player(PlayerType.ALWAYS_CHEAT);
+        Player player1 = new AlwaysCheatPlayer();
+        Player player2 = new AlwaysCheatPlayer();
 
         assertThrows(InvalidRoundException.class, () -> {
             new Game(player1,player2,0);
@@ -20,8 +24,8 @@ class GameTest {
 
     @Test
     public void testGameWithLessThan1Rounds() {
-        Player player1 = new Player(PlayerType.ALWAYS_CHEAT);
-        Player player2 = new Player(PlayerType.ALWAYS_CHEAT);
+        Player player1 = new AlwaysCheatPlayer();
+        Player player2 = new AlwaysCheatPlayer();
         assertDoesNotThrow(() -> {
             new Game(player1,player2,1);
         });
@@ -31,8 +35,8 @@ class GameTest {
     // Test with 5 rounds of game
     @Test
     public void testGameWith5RoundPlayer1CooperateAndPlayer2Cooperate() {
-        Player player1 = new Player(PlayerType.ALWAYS_COOPERATE);
-        Player player2 = new Player(PlayerType.ALWAYS_COOPERATE);
+        Player player1 = new AlwaysCooperatePlayer();
+        Player player2 = new AlwaysCooperatePlayer();
         Game game = new Game(player1,player2,5);
 
         game.playGame();
@@ -42,8 +46,8 @@ class GameTest {
 
     @Test
     public void testGameWith5RoundPlayer1CheatAndPlayer2Cheat() {
-        Player player1 = new Player(PlayerType.ALWAYS_CHEAT);
-        Player player2 = new Player(PlayerType.ALWAYS_CHEAT);
+        Player player1 = new AlwaysCheatPlayer();
+        Player player2 = new AlwaysCheatPlayer();
         Game game = new Game(player1,player2,5);
 
         game.playGame();
@@ -53,8 +57,8 @@ class GameTest {
 
     @Test
     public void testGameWith5RoundPlayer1CheatAndPlayer2Cooperate() {
-        Player player1 = new Player(PlayerType.ALWAYS_CHEAT);
-        Player player2 = new Player(PlayerType.ALWAYS_COOPERATE);
+        Player player1 = new AlwaysCheatPlayer();
+        Player player2 = new AlwaysCooperatePlayer();
         Game game = new Game(player1,player2,5);
 
         game.playGame();
@@ -64,8 +68,8 @@ class GameTest {
 
     @Test
     public void testGameWith5RoundPlayer1CooperateAndPlayer2Cheat() {
-        Player player1 = new Player(PlayerType.ALWAYS_COOPERATE);
-        Player player2 = new Player(PlayerType.ALWAYS_CHEAT);
+        Player player1 = new AlwaysCooperatePlayer();
+        Player player2 = new AlwaysCheatPlayer();
         Game game = new Game(player1,player2,5);
 
         game.playGame();
@@ -77,8 +81,8 @@ class GameTest {
 
     @Test
     public void testGameWith3RoundPlayer1CooperateAndPlayer2Cooperate() {
-        Player player1 = new Player(PlayerType.ALWAYS_COOPERATE);
-        Player player2 = new Player(PlayerType.ALWAYS_COOPERATE);
+        Player player1 = new AlwaysCooperatePlayer();
+        Player player2 = new AlwaysCooperatePlayer();
         Game game = new Game(player1,player2,3);
 
         game.playGame();
@@ -89,13 +93,77 @@ class GameTest {
 
     @Test
     public void testGameWith3RoundPlayer1CheatAndPlayer2Cheat() {
-        Player player1 = new Player(PlayerType.ALWAYS_CHEAT);
-        Player player2 = new Player(PlayerType.ALWAYS_CHEAT);
+        Player player1 = new AlwaysCheatPlayer();
+        Player player2 = new AlwaysCheatPlayer();
         Game game = new Game(player1,player2,3);
 
         game.playGame();
         assertEquals( 0, player1.getScore());
         assertEquals(0 , player2.getScore());
+    }
+
+    //Test for the COPY CAT Player
+    @Test
+    public void testGameWhenPlayer1IsCopyCatAndPlayer2Cooperate() {
+        Player player1 = new CopyCatPlayer();
+        Player player2 = new AlwaysCooperatePlayer();
+
+        Game game = new Game(player1,player2,1);
+        game.playGame();
+        assertEquals( 3, player1.getScore());
+        assertEquals(-1 , player2.getScore());
+    }
+
+    @Test
+    public void testGameWhenPlayer1IsCopyCatAndPlayer2Cheat() {
+        Player player1 = new CopyCatPlayer();
+        Player player2 = new AlwaysCheatPlayer();
+
+        Game game = new Game(player1,player2,1);
+        game.playGame();
+        assertEquals( 0, player1.getScore());
+        assertEquals(0 , player2.getScore());
+    }
+
+    @Test
+    public void testGameWhenPlayer1IsCopyCatAndPlayer2CooperateIn2Rounds() {
+        Player copyCatPlayer = new CopyCatPlayer();
+        Player cooperateplayer = new AlwaysCooperatePlayer();
+        Game game = new Game(copyCatPlayer,cooperateplayer,2);
+        game.playGame();
+        assertEquals( 5, copyCatPlayer.getScore());
+        assertEquals( 1 , cooperateplayer.getScore());
+    }
+
+
+    @Test
+    public void testGameWhenPlayer1IsCopyCatAndPlayer2CheatIn2Rounds() {
+        Player copyCatPlayer = new CopyCatPlayer();
+        Player cooperateplayer = new AlwaysCheatPlayer();
+        Game game = new Game(copyCatPlayer,cooperateplayer,2);
+        game.playGame();
+        assertEquals( 0, copyCatPlayer.getScore());
+        assertEquals( 0 , cooperateplayer.getScore());
+    }
+
+    @Test
+    public void testGameWhenBothAreCopyCatPlayer(){
+        Player firstPlayer = new CopyCatPlayer();
+        Player secondPlayer = new CopyCatPlayer();
+        Game game = new Game(firstPlayer,secondPlayer,1);
+        game.playGame();
+        assertEquals( 0, firstPlayer.getScore());
+        assertEquals( 0 , secondPlayer.getScore());
+    }
+
+    @Test
+    public void testGameWhenBothAreCopyCatPlayerWith2Rounds(){
+        Player firstPlayer = new CopyCatPlayer();
+        Player secondPlayer = new CopyCatPlayer();
+        Game game = new Game(firstPlayer,secondPlayer,2);
+        game.playGame();
+        assertEquals( 0, firstPlayer.getScore());
+        assertEquals( 0 , secondPlayer.getScore());
     }
 
 }
