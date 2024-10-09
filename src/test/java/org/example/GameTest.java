@@ -6,6 +6,7 @@ import org.example.Players.AlwaysCooperatePlayer;
 import org.example.Players.CopyCatPlayer;
 
 
+import org.example.Players.DetectivePlayer;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -164,6 +165,76 @@ class GameTest {
         game.playGame();
         assertEquals( 0, firstPlayer.getScore());
         assertEquals( 0 , secondPlayer.getScore());
+    }
+
+    @Test
+    public void testGameBetweenCheatAndDetectivePlayer(){
+        Player firstPlayer = new AlwaysCheatPlayer();
+        Player secondPlayer = new DetectivePlayer();
+        Game game = new Game(firstPlayer,secondPlayer,5);
+        game.playGame();
+        assertEquals( 9, firstPlayer.getScore());
+        assertEquals( -3 , secondPlayer.getScore());
+    }
+
+    @Test
+    public void testGameBetweenDetectiveAndCheatPlayer(){
+        Player firstPlayer = new DetectivePlayer();
+        Player secondPlayer = new AlwaysCheatPlayer();
+        Game game = new Game(firstPlayer,secondPlayer,5);
+        game.playGame();
+        assertEquals( -3, firstPlayer.getScore());
+        assertEquals( 9 , secondPlayer.getScore());
+    }
+
+    @Test
+    public void testGameBetweenDetectiveAndAlwaysCooperatePlayer(){
+        Player firstPlayer = new DetectivePlayer();
+        Player secondPlayer = new AlwaysCooperatePlayer();
+        Game game = new Game(firstPlayer,secondPlayer,5);
+        game.playGame();
+        assertEquals( 12, firstPlayer.getScore());
+        assertEquals( 4 , secondPlayer.getScore());
+    }
+
+    @Test
+    public void testGameBetweenAlwaysCooperateAndDetectivePlayer(){
+        Player firstPlayer = new AlwaysCooperatePlayer();
+        Player secondPlayer = new DetectivePlayer();
+        Game game = new Game(firstPlayer,secondPlayer,5);
+        game.playGame();
+        assertEquals( 4, firstPlayer.getScore());
+        assertEquals( 12 , secondPlayer.getScore());
+    }
+
+    @Test
+    public void testGameBetweenDetectiveAndCopyCatPlayer(){
+        Player firstPlayer = new CopyCatPlayer();
+        Player secondPlayer = new DetectivePlayer();
+        Game game = new Game(firstPlayer,secondPlayer,5);
+        game.playGame();
+        assertEquals( 9, firstPlayer.getScore());
+        assertEquals( 5 , secondPlayer.getScore());
+    }
+
+    @Test
+    public void testGameBetweenCopyCatAndDetectivePlayer(){
+        Player firstPlayer = new CopyCatPlayer();
+        Player secondPlayer = new DetectivePlayer();
+        Game game = new Game(firstPlayer,secondPlayer,5);
+        game.playGame();
+        assertEquals( 9, firstPlayer.getScore());
+        assertEquals( 5 , secondPlayer.getScore());
+    }
+
+    @Test
+    public void testGameBetweenDetectiveAndDetectivePlayer(){
+        Player firstPlayer = new DetectivePlayer();
+        Player secondPlayer = new DetectivePlayer();
+        Game game = new Game(firstPlayer,secondPlayer,5);
+        game.playGame();
+        assertEquals( 8, firstPlayer.getScore());
+        assertEquals( 8 , secondPlayer.getScore());
     }
 
 }

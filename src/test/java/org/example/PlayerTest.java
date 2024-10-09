@@ -4,6 +4,7 @@ import org.example.Enums.Move;
 import org.example.Players.AlwaysCheatPlayer;
 import org.example.Players.AlwaysCooperatePlayer;
 import org.example.Players.CopyCatPlayer;
+import org.example.Players.DetectivePlayer;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -39,17 +40,17 @@ class PlayerTest {
     }
 
     @Test
-    public void testPlayerLoosePoints() {
+    public void testPlayerLooseOnePoints() {
         Player firstPlayer = new AlwaysCheatPlayer();
-        firstPlayer.loose();
+        firstPlayer.looseOne();
 
         assertEquals(-1,firstPlayer.getScore());
     }
 
     @Test
-    public void testPlayerLoosePointsNegativeCase() {
+    public void testPlayerLooseOnePointsNegativeCase() {
         Player firstPlayer = new AlwaysCheatPlayer();
-        firstPlayer.loose();
+        firstPlayer.looseOne();
 
         assertNotEquals(0,firstPlayer.getScore());
     }
@@ -78,6 +79,28 @@ class PlayerTest {
         assertEquals(Move.CHEAT,firstMove);
     }
 
+    // detective Player test
 
+    @Test
+    public void testDetectivePlayer1Round() {
+        Player firstPlayer = new DetectivePlayer();
+        Move firstMove = firstPlayer.doMove();
+        assertEquals(Move.COOPERATE,firstMove);
+    }
+
+    @Test
+    public void testDetectivePlayer2Round() {
+        Player firstPlayer = new DetectivePlayer();
+        Move firstMove = firstPlayer.doMove();
+        Move secondMove = firstPlayer.doMove();
+        assertEquals(Move.COOPERATE,firstMove);
+        assertEquals(Move.CHEAT,secondMove);
+    }
+
+    @Test
+    public void testResetPoint() {
+        Player firstPlayer = new AlwaysCheatPlayer();
+        firstPlayer.gainThree();
+    }
 
 }

@@ -19,12 +19,12 @@ public abstract class Player {
         Move opponentMove = otherPlayer.doMove();
 
         if (myMove == Move.COOPERATE) {
-            this.loose();
+            this.looseOne();
             otherPlayer.gainThree();
         }
         if (opponentMove == Move.COOPERATE) {
             this.gainThree();
-            otherPlayer.loose();
+            otherPlayer.looseOne();
         }
 
         this.rememberMove(opponentMove);
@@ -37,11 +37,15 @@ public abstract class Player {
         return this.score;
     }
 
-    public void loose() {
+    public void looseOne() {
         this.score -= 1;
     }
 
     public void gainThree() {
         this.score += 3;
+    }
+
+    public void resetPoints() {
+        this.score = 0;
     }
 }
